@@ -1,0 +1,5 @@
+#!/bin/rc
+for(i in `{du -a | awk '{ print $2 }'}){
+    RESULT=`{cat $i | grep $1}
+    if(! ~ $RESULT '') echo $i: $RESULT
+}
