@@ -1,1 +1,19 @@
-# https://radar.weather.gov/Conus/Loop/
+#!/bin/rc
+RADARFILE=$home/tmp/radar.gif
+RADARURL='https://radar.weather.gov/Conus/Loop/'
+
+if ( ~ $1 '' || ~ $1 '-h' ){
+	echo usage: $0 station
+	echo available stations:
+	hget $RADARURL | grep \.gif | sed 's/^.*href=\"//g; s/\".*$//g; s/\.gif//g' | sed '1,2d' | sed 's/^/\ \-\ /g'
+	exit 1
+}
+
+if ( ! hget $RADARURL/$1.gif > $RADARFILE ){
+	echo radar not found!
+	rm $RADARFILE
+	exit 1
+}
+
+gif $RADARFILE
+rm  $RADARFILE
